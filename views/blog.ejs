@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>
+            <%= blog.title%>
+        </title>
+
+        <style>
+            .center {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+            }
+            .img{
+                height: 50px;
+            }
+        </style>
+</head>
+
+<body>
+    <%- include('./partials/nav') %>
+
+        <div class="container">
+            <h1 style="text-align: center;">
+                <%= blog.title %>
+            </h1>
+            <% if (blog.coverImageURL) { %>
+                <img class="center" src="<%= blog.coverImageURL%>" alt="/public/images/broken-image.pngx">
+            <% } %>
+            <br>
+            <pre><%= blog.body%></pre>
+        </div>
+
+        <div class="container mt-4">
+            <h5>Author </h5>
+            <img src="<%= blog.createdBy.profileImageURL%>" class="img" alt="" width="50px">
+            <%=blog.createdBy.fullName %>
+        </div>
+
+        <div class="container mt-4">
+            <h1>Comments(<%= comments.length%>)</h1>
+            <% if (locals.user) { %>
+                <form action="/blog/comment/<%= blog._id %>" method="post">
+                    <div class="mb-3">
+                        <input name="content" placeholder="Add your Comment" type="text" class="form-control">
+                    </div>
+                    <button type="submit" class="sm btn btn-primary">Add</button>
+                </form>
+                <% } %>
+
+                    <div class="container m-2 border border-secondary" style="padding: 0px;">
+                        <% comments.forEach(comment=> { %>
+                            <div class="row m-2 border border-secondary">
+                                <div class="col" >
+                                    <img  src="<%= comment.postedBy.profileImageURL%>" alt="" class="m-1 mt-2 img" width="50px">
+                                </div>
+                                <div class="col-11">
+                                    <div class="row">
+                                        <%=comment.postedBy.fullName %>
+                                    </div>
+                                    <div class="row">
+                                        <pre><h6><%= comment.content%></h6></pre>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
+        </div>
+
+
+
+        <%- include('./partials/script') %>
+</body>
+
+</html>
